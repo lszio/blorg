@@ -1,5 +1,5 @@
 ---
-import { JupyterCell } from './JupyterCell';
+import { InteractiveCell } from './InteractiveCell';
 
 const { language, value, parameters } = Astro.props;
 const isInteractive = parameters && (
@@ -10,7 +10,7 @@ const isInteractive = parameters && (
 ---
 
 {isInteractive ? (
-  <JupyterCell client:load initialCode={value} language={language || 'scheme'} />
+  <InteractiveCell client:load initialCode={value} language={language || 'scheme'} />
 ) : (
   <div className="my-6">
     <pre className="p-4 rounded-lg bg-muted/50 overflow-x-auto"><code class={`language-${language}`}>{value}</code></pre>

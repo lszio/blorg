@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { JupyterCell } from './JupyterCell';
+import { InteractiveCell } from './InteractiveCell';
 import { Button } from "@/components/ui/button";
 import { ChevronUp, ChevronDown, Terminal, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -61,7 +61,7 @@ export const BottomPlayground: React.FC = () => {
       {!isMinimized && (
         <div className="p-4 overflow-auto h-[400px]">
           <div className="max-w-4xl mx-auto">
-            <JupyterCell 
+            <InteractiveCell 
               initialCode={code} 
               language="scheme" 
               onSave={handleSave}
