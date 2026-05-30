@@ -1,0 +1,104 @@
+---
+/**
+ * TOC (Table of Contents) component
+ * Scans the article for h2 and h3 headings to build a navigation list.
+ */
+---
+
+<nav id="toc" class="toc glass p-6 rounded-2xl shadow-sm border border-white/20 sticky top-32">
+  <h2 class="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4 flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-list"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+    Contents
+  </h2>
+  <ul id="toc-list" class="space-y-3">
+    <!-- Items populated via script -->
+    <li class="text-sm text-muted-foreground italic opacity-50">Loading...</li>
+  </ul>
+</nav>
+
+<script>
+  function populateTOC() {
+    const tocList = document.getElementById('toc-list');
+    if (!tocList) return;
+
+    // Find headings in the article
+    const article = document.querySelector('article');
+    if (!article) return;
+
+    const headings = Array.from(article.querySelectorAll('h2, h3'));
+    
+    // Clear existing items
+    tocList.innerHTML = '';
+
+    if (headings.length === 0) {
+      const li = document.createElement('li');
+      li.className = "text-sm text-muted-foreground italic";
+      li.textContent = "No headings found";
+      tocList.appendChild(li);
+      return;
+    }
+
+    headings.forEach((h) => {
+      const li = document.createElement('li');
+      const depth = h.tagName.toLowerCase() === 'h2' ? 2 : 3;
+      li.className = `toc-item depth-${depth}`;
+      if (depth === 3) li.classList.add('ml-4');
+
+      const a = document.createElement('a');
+      // Ensure heading has an ID for linking
+      if (!h.id) {
+        h.id = h.textContent?.toLowerCase()
+          .trim()
+          .replace(/\s+/g, '-')
+          .replace(/[^\w-]/g, '') || `heading-${Math.random().toString(36).substr(2, 9)}`;
+      }
+      
+      a.href = `#${h.id}`;
+      a.textContent = h.textContent;
+      a.className = "text-sm text-foreground/70 hover:text-primary hover:translate-x-1 transition-all block leading-tight border-l-2 border-transparent hover:border-primary/30 pl-3";
+      
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+
+    // Active heading tracking
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const id = entry.target.getAttribute('id');
+        const link = tocList.querySelector(`a[href="#${id}"]`);
+        if (entry.isIntersecting) {
+          tocList.querySelectorAll('a').forEach(l => l.classList.remove('text-primary', 'border-primary', 'font-medium'));
+          link?.classList.add('text-primary', 'border-primary', 'font-medium');
+        }
+      });
+    }, { rootMargin: '-100px 0px -66%' });
+
+    headings.forEach(h => observer.observe(h));
+  }
+
+  // Initial load
+  populateTOC();
+  
+  // Re-run for Astro View Transitions
+  document.addEventListener('astro:after-swap', populateTOC);
+</script>
+
+<style>
+  .toc {
+    max-height: calc(100vh - 10rem);
+    overflow-y: auto;
+  }
+  
+  .toc::-webkit-scrollbar {
+    display: none;
+  }
+
+  .toc {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .toc-item a.font-medium {
+    border-left-color: var(--color-primary);
+  }
+</style>
