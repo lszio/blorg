@@ -1,10 +1,8 @@
 ---
-import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import BaseHead from '../../components/BaseHead.astro';
-import Footer from '../../components/Footer.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
-import Header from '../../components/Header.astro';
+import AppSidebar from '../../components/layout/AppSidebar.astro';
+import { GlobalConsole } from '../../components/interactive/GlobalConsole';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
 
 const posts = (await getCollection('blog')).sort(
@@ -16,99 +14,39 @@ const posts = (await getCollection('blog')).sort(
 <html lang="en">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
-			main {
-				width: 960px;
-			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-			}
-			ul li {
-				width: calc(50% - 1rem);
-			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
-				display: block;
-			}
-			.title {
-				margin: 0;
-				color: rgb(var(--black));
-				line-height: 1;
-			}
-			.date {
-				margin: 0;
-				color: rgb(var(--gray));
-			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
-			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
-				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
-				}
-			}
-		</style>
 	</head>
-	<body>
-		<Header />
-		<main>
-			<section>
-				<ul>
-					{
-						posts.map((post) => (
-							<li>
-								<a href={`/blog/${post.id}/`}>
-									{post.data.image && (
-										<Image width={720} height={360} src={post.data.image} alt="" />
-									)}
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.createTime} />
-									</p>
-								</a>
-							</li>
-						))
-					}
-				</ul>
-			</section>
+	<body class="bg-fixed bg-cover flex h-screen text-foreground selection:bg-primary/20">
+		<AppSidebar />
+		<main class="flex-1 overflow-y-auto relative pt-16 pb-32 scroll-smooth">
+			<div class="max-w-4xl mx-auto px-12">
+				<header class="mb-16">
+					<h1 class="text-6xl font-extrabold tracking-tighter mb-4 gradient-text">Blog</h1>
+					<p class="text-2xl text-muted-foreground leading-relaxed max-w-2xl">{SITE_DESCRIPTION}</p>
+				</header>
+
+				<section class="space-y-8">
+					<div class="grid gap-4">
+						{posts.map(post => (
+							<a href={`/blog/${post.id}`} class="glass p-6 rounded-2xl hover:bg-white/10 transition-all flex justify-between items-center group">
+								<div>
+									<h3 class="text-xl font-bold">{post.data.title}</h3>
+									<p class="text-sm opacity-50">{post.data.summary}</p>
+								</div>
+								<span class="opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+							</a>
+						))}
+					</div>
+				</section>
+			</div>
 		</main>
-		<Footer />
+		<GlobalConsole client:load />
 	</body>
 </html>
+
+<style>
+	.gradient-text {
+		background: linear-gradient(to right, var(--color-primary), #6366f1);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+</style>
