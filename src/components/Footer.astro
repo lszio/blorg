@@ -1,9 +1,13 @@
 ---
+import { SITE_ICP } from '../consts';
 const today = new Date();
 ---
 
 <footer>
 	&copy; {today.getFullYear()} Your name here. All rights reserved.
+	<div class="icp">
+		<a href="https://beian.miit.gov.cn/" target="_blank">{SITE_ICP}</a>
+	</div>
 	<div class="social-links">
 		<a href="https://m.webtoo.ls/@astro" target="_blank">
 			<span class="sr-only">Follow Astro on Mastodon</span>
@@ -51,6 +55,17 @@ const today = new Date();
 		justify-content: center;
 		gap: 1em;
 		margin-top: 1em;
+	}
+	.icp {
+		margin-top: 0.5em;
+		font-size: 0.8em;
+	}
+	.icp a {
+		text-decoration: none;
+		color: rgb(var(--gray));
+	}
+	.icp a:hover {
+		color: rgb(var(--gray-dark));
 	}
 	.social-links a {
 		text-decoration: none;
