@@ -1,12 +1,14 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
 import AppSidebar from '../components/layout/AppSidebar.astro';
+import TOC from '../components/TOC.astro';
+import FormattedDate from '../components/FormattedDate.astro';
 import { GlobalConsole } from '../components/interactive/GlobalConsole';
 import type { CollectionEntry } from 'astro:content';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, summary } = Astro.props;
+const { title, summary, createTime } = Astro.props;
 ---
 
 <html lang="en">
@@ -15,15 +17,29 @@ const { title, summary } = Astro.props;
   </head>
   <body class="bg-fixed bg-cover flex h-screen text-foreground selection:bg-primary/20">
     <AppSidebar />
-    <main class="flex-1 overflow-y-auto relative pt-16 pb-32 scroll-smooth">
-       <div class="max-w-4xl mx-auto px-12">
-         <article class="prose prose-slate max-w-none prose-headings:tracking-tighter prose-headings:font-bold">
-           <header class="mb-12 border-b border-white/10 pb-12">
-             <h1 class="text-5xl mb-4">{title}</h1>
-             <p class="text-xl text-muted-foreground">{summary}</p>
-           </header>
-           <slot />
-         </article>
+    <main class="flex-1 overflow-y-auto relative pt-12 pb-32 scroll-smooth">
+       <div class="max-w-6xl mx-auto px-6 lg:px-12">
+         <div class="grid grid-cols-1 xl:grid-cols-[1fr_250px] gap-12">
+           <article class="prose prose-slate max-w-none prose-headings:tracking-tighter prose-headings:font-bold prose-a:text-primary">
+             <header class="mb-10 pb-8 border-b border-white/10">
+               <div class="flex items-center gap-3 text-sm text-muted-foreground/80 mb-6 font-mono">
+                 {createTime && <FormattedDate date={createTime} />}
+                 <span class="opacity-50">•</span>
+                 <span>~5 min read</span>
+               </div>
+               <h1 class="text-4xl md:text-5xl mb-4 font-extrabold tracking-tight text-foreground">{title}</h1>
+               {summary && <p class="text-xl text-muted-foreground leading-relaxed mt-4 mb-0">{summary}</p>}
+             </header>
+             <div class="text-foreground/90">
+               <slot />
+             </div>
+           </article>
+           <aside class="hidden xl:block">
+             <div class="sticky top-12">
+               <TOC />
+             </div>
+           </aside>
+         </div>
        </div>
     </main>
     <GlobalConsole client:load />
