@@ -12,7 +12,16 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://example.com',
-  integrations: [mdx(), org(), sitemap(), react()],
+  integrations: [
+    mdx(), 
+    org({
+      components: {
+        src: '/src/components/interactive/OrgSourceBlock.astro'
+      }
+    }), 
+    sitemap(), 
+    react()
+  ],
 
   fonts: [
       {

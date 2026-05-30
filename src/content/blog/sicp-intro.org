@@ -1,0 +1,18 @@
+#+TITLE: SICP 学习笔记
+#+SUMMARY: 探索计算机程序的构造和解释
+#+DATE: 2026-05-22
+#+LABELS: lisp:scheme:sicp
+#+DRAFT: false
+
+* 第一章：构造过程抽象
+
+在本章中，我们将学习如何使用过程来抽象计算。
+
+#+BEGIN_SRC scheme :interactive
+(define (square x) (* x x))
+(square 5)
+#+END_SRC
+
+* 练习 1.1
+
+试着在下方的终端中运行一些简单的 Scheme 表达式。

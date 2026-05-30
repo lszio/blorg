@@ -1,0 +1,18 @@
+---
+import { JupyterCell } from './JupyterCell';
+
+const { language, value, parameters } = Astro.props;
+const isInteractive = parameters && (
+  parameters.interactive !== undefined || 
+  parameters[':interactive'] !== undefined ||
+  Object.keys(parameters).some(k => k.includes('interactive'))
+);
+---
+
+{isInteractive ? (
+  <JupyterCell client:load initialCode={value} language={language || 'scheme'} />
+) : (
+  <div className="my-6">
+    <pre className="p-4 rounded-lg bg-muted/50 overflow-x-auto"><code class={`language-${language}`}>{value}</code></pre>
+  </div>
+)}
