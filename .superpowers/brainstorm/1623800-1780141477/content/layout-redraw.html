@@ -1,0 +1,40 @@
+<h2>彻底告别模板：重绘整体布局</h2>
+<p class="subtitle">我们将移除所有传统的 Header/Footer，重新定义交互空间</p>
+
+<div class="options">
+  <div class="option" data-choice="workspace" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>现代工作空间 (Modern Workspace)</h3>
+      <p>取消顶部导航，改为左侧持久化的侧边栏。右侧是主内容区。这种布局更有“软件”感，适合多章节书籍和深度编程。</p>
+      <div class="mockup" style="margin-top: 10px; height: 150px; display: flex; background: #f8fafc; border: 1px solid #e2e8f0;">
+        <div style="width: 25%; border-right: 1px solid #e2e8f0; background: #fff; padding: 10px;">
+          <div style="width: 80%; height: 8px; background: #eee; margin-bottom: 8px;"></div>
+          <div style="width: 60%; height: 6px; background: #f5f5f5; margin-bottom: 5px;"></div>
+          <div style="width: 70%; height: 6px; background: #f5f5f5;"></div>
+        </div>
+        <div style="flex: 1; padding: 15px;">
+          <div style="width: 40%; height: 12px; background: #cbd5e1; margin-bottom: 15px;"></div>
+          <div style="width: 100%; height: 60px; background: #fff; border: 1px solid #eee; border-radius: 8px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="zen" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>沉浸式禅模式 (Immersive Zen)</h3>
+      <p>完全去除边框和传统导航。内容居中，交互式组件（如目录、运行按钮）以浮动面板或热键触发的形式存在。极致的阅读专注度。</p>
+      <div class="mockup" style="margin-top: 10px; height: 150px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #fff;">
+        <div style="width: 60%; height: 12px; background: #334155; margin-bottom: 20px;"></div>
+        <div style="width: 50%; border-top: 1px solid #f1f5f9; padding-top: 20px;">
+          <div style="width: 100%; height: 8px; background: #f8fafc; margin-bottom: 8px;"></div>
+          <div style="width: 90%; height: 8px; background: #f8fafc;"></div>
+        </div>
+        <!-- Floating indicator -->
+        <div style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); background: #18181b; padding: 4px 12px; border-radius: 20px; font-size: 8px; color: #fff;">⌘ Command Palette</div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+<h2>输出结果的展示方式</h2>
+<p class="subtitle">执行代码后的输出应该出现在哪里？</p>
+
+<div class="options">
+  <div class="option" data-choice="inline" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>单元格内联 (Inline Results)</h3>
+      <p>类似 Jupyter，每个代码块下方直接显示其执行结果。适合查看局部变量和单个函数的运行情况。</p>
+      <div class="mockup" style="margin-top: 10px; padding: 10px; border: 1px solid #eee;">
+        <div style="font-family: monospace; padding: 5px; background: #f5f5f5;">(+ 1 2)</div>
+        <div style="font-family: monospace; padding: 5px; color: #666;">=> 3</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="console" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>全局控制台 (Global Console)</h3>
+      <p>所有的执行结果汇总到一个固定的控制台面板。适合跟踪整个会话的状态变化和长时间运行的日志。</p>
+      <div class="mockup" style="margin-top: 10px; padding: 10px; border: 1px solid #eee; display: flex; flex-direction: column; height: 100px;">
+        <div style="flex: 1;">Content...</div>
+        <div style="height: 40px; background: #333; color: #fff; font-family: monospace; padding: 5px; font-size: 10px;">
+          [Log] Result A: 3<br>
+          [Log] Result B: 5
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="hybrid" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>混合模式 (Hybrid)</h3>
+      <p>每个块下方显示最新结果，同时提供一个可以展开的全局日志视图。兼顾局部反馈和全局历史。</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+<h2>UI/UX 重构方向：交互式阅读与编程</h2>
+<p class="subtitle">请选择最符合您预期的项目定位和阅读体验方向</p>
+
+<div class="options">
+  <div class="option" data-choice="linear" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>线性交互式电子书 (Notebook Style)</h3>
+      <p>类似 Jupyter 或 Obsidian，文本与代码交织。重点在于平滑的阅读流，代码块作为内容的补充。适合教程、实验报告。</p>
+      <div class="mockup" style="margin-top: 10px; height: 100px; padding: 10px; font-size: 10px;">
+        <div class="mock-nav">Header</div>
+        <div style="border: 1px dashed #ccc; padding: 5px; margin-bottom: 5px;">Text content...</div>
+        <div class="mock-input" style="height: 30px;">(scheme code)</div>
+        <div style="border: 1px dashed #ccc; padding: 5px;">More text...</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="split" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>分屏交互文档 (Split-View/Docs)</h3>
+      <p>左侧纯文本阅读，右侧持久化代码编辑器和控制台。重点在于沉浸式编码，随时查看效果。适合技术文档、语言学习。</p>
+      <div class="mockup" style="margin-top: 10px; height: 100px; padding: 0; font-size: 10px; display: flex;">
+        <div style="width: 40%; border-right: 1px solid #eee; padding: 5px;">Text...</div>
+        <div style="width: 60%; padding: 5px; background: #f9f9f9;">Editor / Output</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="workspace" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>工作空间模式 (IDE Style)</h3>
+      <p>侧边栏导航 + 中心编辑区 + 底部终端。完全的编程环境感，适合复杂的项目展示和多文件操作。</p>
+      <div class="mockup" style="margin-top: 10px; height: 100px; padding: 0; font-size: 10px; display: flex; flex-direction: column;">
+        <div style="display: flex; flex: 1;">
+          <div style="width: 20%; border-right: 1px solid #eee;">Files</div>
+          <div style="flex: 1;">Main Code</div>
+        </div>
+        <div style="height: 20px; border-top: 1px solid #eee;">Terminal</div>
+      </div>
+    </div>
+  </div>
+</div>

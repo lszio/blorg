@@ -1,37 +1,31 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import AppSidebar from '../components/layout/AppSidebar.astro';
 import { GlobalConsole } from '../components/interactive/GlobalConsole';
-import TOC from '../components/TOC.astro';
 import type { CollectionEntry } from 'astro:content';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, summary, image } = Astro.props;
+const { title, summary } = Astro.props;
 ---
 
 <html lang="en">
   <head>
     <BaseHead title={title} description={summary || ''} />
   </head>
-  <body class="bg-fixed bg-cover selection:bg-primary/20">
-    <Header />
-    <main class="relative pt-24 pb-32">
-      <div class="max-w-screen-xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-12">
-        <article class="prose prose-slate max-w-none">
-          <header class="mb-12 border-b border-border pb-12">
-            <h1 class="text-5xl font-bold tracking-tighter mb-4 text-foreground">{title}</h1>
-            <p class="text-xl text-muted-foreground leading-relaxed">{summary}</p>
-          </header>
-          <slot />
-        </article>
-        <aside class="hidden lg:block sticky top-32 h-fit">
-          <TOC />
-        </aside>
-      </div>
+  <body class="bg-fixed bg-cover flex h-screen text-foreground selection:bg-primary/20">
+    <AppSidebar />
+    <main class="flex-1 overflow-y-auto relative pt-16 pb-32 scroll-smooth">
+       <div class="max-w-4xl mx-auto px-12">
+         <article class="prose prose-slate max-w-none prose-headings:tracking-tighter prose-headings:font-bold">
+           <header class="mb-12 border-b border-white/10 pb-12">
+             <h1 class="text-5xl mb-4">{title}</h1>
+             <p class="text-xl text-muted-foreground">{summary}</p>
+           </header>
+           <slot />
+         </article>
+       </div>
     </main>
     <GlobalConsole client:load />
-    <Footer />
   </body>
 </html>

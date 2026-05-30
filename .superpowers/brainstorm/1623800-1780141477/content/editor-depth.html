@@ -1,0 +1,31 @@
+<h2>代码编辑器的深度与交互</h2>
+<p class="subtitle">在 Notebook 模式下，代码编辑器应该如何融入阅读体验？</p>
+
+<div class="options">
+  <div class="option" data-choice="minimal" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>无缝极简版 (Seamless/Minimal)</h3>
+      <p>看起来像普通的文本，点击后变为可编辑。重点是减少视觉干扰，让代码块感觉像是文章的一部分。</p>
+      <div class="mockup" style="margin-top: 10px; padding: 10px;">
+        <div style="font-family: monospace; padding: 8px; border-left: 3px solid #eee;">
+          (define (fib n) ... )
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="rich" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>功能完备版 (Full-featured Editor)</h3>
+      <p>类似 CodeMirror/Monaco。提供语法高亮、自动补全、行号、缩进指南。重点是高效的编码体验。</p>
+      <div class="mockup" style="margin-top: 10px; padding: 10px; background: #1e1e1e; color: #d4d4d4; font-family: monospace; border-radius: 4px;">
+        <div style="font-size: 10px;">1 | <span style="color: #569cd6;">(define</span> (fib n)</div>
+        <div style="font-size: 10px;">2 |   <span style="color: #c586c0;">(if</span> (&lt; n 2)</div>
+        <div style="font-size: 10px;">3 |       n</div>
+        <div style="font-size: 10px;">4 |       (+ (fib (- n 1)) (fib (- n 2)))))</div>
+      </div>
+    </div>
+  </div>
+</div>
