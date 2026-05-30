@@ -3,3 +3,4 @@
 
 export const SITE_TITLE = 'Astro Blog';
 export const SITE_DESCRIPTION = 'Welcome to my website!';
+export const SITE_ICP = '沪ICP备2024096567号-1';
