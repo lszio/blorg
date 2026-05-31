@@ -5,7 +5,9 @@ const { language, value, parameters } = Astro.props;
 const isInteractive = parameters && (
   parameters.interactive !== undefined || 
   parameters[':interactive'] !== undefined ||
-  Object.keys(parameters).some(k => k.includes('interactive'))
+  Object.keys(parameters).some(k => k.toLowerCase().includes('interactive')) ||
+  language === 'scheme' || 
+  language === 'lisp'
 );
 ---
 

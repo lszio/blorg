@@ -9,6 +9,7 @@ import { logStore } from "@/lib/interpreters/store";
 import { cn } from "@/lib/utils";
 import { Play, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { oneDark } from "@codemirror/theme-one-dark";
 
 interface InteractiveCellProps {
   initialCode: string;
@@ -22,16 +23,16 @@ export const InteractiveCell: React.FC<InteractiveCellProps> = ({ initialCode, l
   const viewRef = useRef<EditorView | null>(null);
   const [result, setResult] = useState<{output?: string, error?: string} | null>(null);
   const [isRunning, setIsRunning] = useState(false);
-// ... (omitted for brevity in search, but I will provide full replacement)
 
   useEffect(() => {
     if (!editorRef.current) return;
-    
+
     const startState = EditorView.create({
-      doc: initialCode,
+      doc: initialCode.trim(),
       extensions: [
         basicSetup,
         StreamLanguage.define(scheme),
+        oneDark,
         keymap.of([
           indentWithTab,
           {
@@ -40,9 +41,10 @@ export const InteractiveCell: React.FC<InteractiveCellProps> = ({ initialCode, l
           }
         ]),
         EditorView.theme({
-          "&": { height: "auto", minHeight: "100px" },
-          ".cm-scroller": { overflow: "auto" },
-          ".cm-content": { fontFamily: "var(--font-mono)" }
+          "&": { height: "auto", minHeight: "80px", fontSize: "13px" },
+          ".cm-scroller": { overflow: "auto", borderRadius: "8px" },
+          ".cm-content": { fontFamily: "var(--font-mono)", padding: "10px 0" },
+          "&.cm-focused": { outline: "none" }
         })
       ]
     });

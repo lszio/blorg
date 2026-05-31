@@ -10,7 +10,14 @@ export class LipsInterpreter implements Interpreter {
     if (this.lips) return;
     // @ts-ignore
     const lipsModule = await import('lips');
-    this.lips = lipsModule;
+    // Handle both default export (common in ESM wrappers) and direct exports
+    this.lips = lipsModule.default || lipsModule;
+    
+    // Some versions of LIPS might need initialization or global setup
+    if (this.lips && typeof window !== 'undefined') {
+        // Ensure LIPS is available for internal referencing if needed
+        (window as any).lips = this.lips;
+    }
   }
 
   async eval(code: string): Promise<EvaluationResult> {
@@ -18,25 +25,38 @@ export class LipsInterpreter implements Interpreter {
 
     const output: string[] = [];
     
-    // In LIPS, we can create a custom output port
-    const originalStdout = this.lips.env.get('current-output-port');
-    
     try {
-      // Create a custom port to capture output from (display ...) or (print ...)
+      // Create a custom output port to capture (display) and (print) calls
       const port = new this.lips.OutputPort((chunk: string) => {
         output.push(chunk);
       });
       
-      // We might need to set the current output port in the environment
-      // But for simple exec, lips often uses the global env
+      // Save current output port to restore it later
+      const env = this.lips.env;
+      const oldPort = env.get('current-output-port');
       
-      const results = await this.lips.exec(code);
-      const lastResult = results[results.length - 1];
+      // Set the current output port to our custom one
+      env.set('current-output-port', port);
       
-      return {
-        output: output.join('') || (lastResult !== undefined ? this.lips.repr(lastResult) : ""),
-        logs: results.map((r: any) => this.lips.repr(r))
-      };
+      try {
+        const results = await this.lips.exec(code);
+        const lastResult = results[results.length - 1];
+        
+        let finalOutput = output.join('');
+        
+        // If nothing was displayed explicitly, show the last return value
+        if (finalOutput === "" && lastResult !== undefined) {
+          finalOutput = this.lips.repr(lastResult);
+        }
+        
+        return {
+          output: finalOutput,
+          logs: results.map((r: any) => this.lips.repr(r))
+        };
+      } finally {
+        // Always restore the original port to avoid side effects
+        env.set('current-output-port', oldPort);
+      }
     } catch (e: any) {
       return {
         output: output.join(''),
