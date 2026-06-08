@@ -1,16 +1,5 @@
-export interface EvaluationResult {
-  output: string;
-  error?: string;
-  logs?: string[];
-}
-
-export interface Interpreter {
-  id: string;
-  name: string;
-  language: string;
-  init(): Promise<void>;
-  eval(code: string): Promise<EvaluationResult>;
-  reset?(): Promise<void>;
-}
-
-export type InterpreterFactory = (lang: string) => Promise<Interpreter>;
+/**
+ * @deprecated Import from `@/lib/types` instead.
+ * These types are moving to src/lib/types.ts (the canonical domain model).
+ */
+export type { EvaluationResult, Interpreter, InterpreterFactory } from '../types';

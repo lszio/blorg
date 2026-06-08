@@ -1,63 +1,68 @@
-# Astro Starter Kit: Blog
+# Blorg — Interactive Learning Workspace
+
+A modern, interactive environment for exploring computer science classics. Code blocks are executable cells; the reader edits and runs them in place.
+
+## Tech Stack
+
+| Layer | Choice |
+|---|---|
+| Framework | [Astro 6](https://astro.build) (static site + islands) |
+| Interactive UI | [React 19](https://react.dev) |
+| Code Editor | [CodeMirror 6](https://codemirror.net) |
+| Scheme Interpreter | [LIPS](https://github.com/jcubic/lips) (browser-side) |
+| Styling | [Tailwind CSS v4](https://tailwindcss.com) + [shadcn/ui](https://ui.shadcn.com) |
+| Content Format | Org-mode (via [orgajs](https://github.com/orgajs/orgajs)) + Markdown/MDX |
+| Persistence | Origin Private File System (OPFS) |
+
+## Getting Started
 
 ```sh
-bun create astro@latest -- --template blog
+bun install
+bun dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Opens at `http://localhost:4321`.
 
-Features:
+## Commands
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and Open Graph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+| Command | Action |
+|---|---|
+| `bun install` | Install dependencies |
+| `bun dev` | Start dev server |
+| `bun build` | Build for production → `dist/` |
+| `bun preview` | Preview production build |
 
-## 🚀 Project Structure
+## Architecture
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-├── public/
-├── src/
-│   ├── assets/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+```
+src/
+├── components/
+│   ├── interactive/     # CodeMirror, GlobalConsole, InteractiveCell
+│   ├── layout/          # AppSidebar
+│   └── ui/              # shadcn/ui components
+├── content/
+│   └── blog/            # Posts in .md, .mdx, .org
+├── layouts/             # BlogPost layout (TOC, sidebar, console)
+├── lib/
+│   ├── interpreters/    # Session, Interpreter, LogStore
+│   ├── persistence/     # OPFS wrapper (PersistBackend)
+│   ├── types.ts         # Core domain model (Cell, Workspace, EventBus)
+│   └── utils.ts         # cn() helper
+├── pages/               # Astro routes
+└── styles/              # Global CSS + Tailwind
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Deployment
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Blorg builds to a static `dist/` directory and can be deployed anywhere static files are served (Railway, Cloudflare Pages, Netlify, Vercel). Nixpacks and Railway configs are included.
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+## Overview
 
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `bun install`             | Installs dependencies                            |
+| Command                | Action                                           |
+| :--------------------- | :----------------------------------------------- |
+| `bun install`          | Installs dependencies                            |
 | `bun dev`             | Starts local dev server at `localhost:4321`      |
 | `bun build`           | Build your production site to `./dist/`          |
 | `bun preview`         | Preview your build locally, before deploying     |
 | `bun astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `bun astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).

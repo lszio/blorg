@@ -9,7 +9,9 @@ export const GlobalConsole: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    return logStore.subscribe(setLogs);
+    /** subscribe returns an unsubscribe function — we store and call it on unmount */
+    const unsub = logStore.subscribe(setLogs);
+    return () => unsub();
   }, []);
 
   useEffect(() => {
@@ -56,7 +58,7 @@ export const GlobalConsole: React.FC = () => {
             </div>
           )}
           {logs.map((log, i) => (
-            <div key={log.timestamp + i} className={cn(
+            <div key={log.timestamp + '-' + i} className={cn(
               "flex gap-3 leading-relaxed border-l-2 pl-3 py-0.5",
               log.type === 'error' ? "text-rose-400 border-rose-400/30" : 
               log.type === 'success' ? "text-emerald-400 border-emerald-400/30" : 

@@ -4,7 +4,7 @@ import { StreamLanguage } from "@codemirror/language";
 import { scheme } from "@codemirror/legacy-modes/mode/scheme";
 import { keymap } from "@codemirror/view";
 import { indentWithTab } from "@codemirror/commands";
-import { getInterpreter } from "@/lib/interpreters/factory";
+import { Session } from "@/lib/interpreters/factory";
 import { logStore } from "@/lib/interpreters/store";
 import { cn } from "@/lib/utils";
 import { Play, Loader2 } from "lucide-react";
@@ -23,6 +23,22 @@ export const InteractiveCell: React.FC<InteractiveCellProps> = ({ initialCode, l
   const viewRef = useRef<EditorView | null>(null);
   const [result, setResult] = useState<{output?: string, error?: string} | null>(null);
   const [isRunning, setIsRunning] = useState(false);
+
+  // Each InteractiveCell gets its own isolated Session
+  const sessionRef = useRef<Session | null>(null);
+  const sessionInitRef = useRef<Promise<void> | null>(null);
+
+  useEffect(() => {
+    if (!sessionRef.current) {
+      const s = new Session(language);
+      sessionInitRef.current = s.init();
+      sessionRef.current = s;
+    }
+    return () => {
+      // Cleanup: clear the session reference on unmount
+      sessionRef.current = null;
+    };
+  }, [language]);
 
   useEffect(() => {
     if (!editorRef.current) return;
@@ -62,9 +78,18 @@ export const InteractiveCell: React.FC<InteractiveCellProps> = ({ initialCode, l
     const code = viewRef.current?.state.doc.toString() || "";
     setIsRunning(true);
     if (onSave) onSave(code);
-    const interpreter = await getInterpreter(language);
+
+    // Ensure session is initialized
+    if (sessionInitRef.current) await sessionInitRef.current;
+    const session = sessionRef.current;
+    if (!session) {
+      setResult({ error: 'Interpreter session not available' });
+      setIsRunning(false);
+      return;
+    }
+
     try {
-      const res = await interpreter.eval(code);
+      const res = await session.eval(code);
       setResult({ output: res.output });
       logStore.addLog({ type: 'success', message: `[${language}] ${res.output}` });
     } catch (e: any) {
